@@ -16,7 +16,7 @@ namespace liveBot
         public static void Main(string[] args)
         {
             
-            LiveBot.Run();
+    /*         LiveBot.Run(); */
             BuildWebHost(args).Run();
 
         }
