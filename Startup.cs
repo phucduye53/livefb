@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using liveBot.EntityFramework.models;
 using liveBot.Repository;
+using livefb.Repository;
+using livefb.Services.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +26,8 @@ namespace liveBot
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddTransient<UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
