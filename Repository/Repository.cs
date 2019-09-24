@@ -10,19 +10,18 @@ namespace liveBot.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        public Repository()
-        {
-        }
-
-        public DbSet<T> DbSet
-        {
-            get
-            {
-                return DbContext.Set<T>();
-            }
-        }
-
         public DbContext DbContext { get; set; }
+        public DbSet<T> DbSet { get; set; }
+
+        public Repository(DbContext DbContext)
+        {
+            this.DbContext = DbContext;
+            this.DbSet = DbContext.Set<T>();
+        }
+    
+        
+
+  
 
         /// <summary>
         /// Add new entity
@@ -192,5 +191,7 @@ namespace liveBot.Repository
             }
             return data;
         }
+
+
     }
 }

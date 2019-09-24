@@ -9,10 +9,13 @@ namespace liveBot.Repository
 {
     public interface IRepository<T> where T: class
     {
-        DbSet<T> DbSet { get; }
+        DbSet<T> DbSet { get; set;}
         DbContext DbContext { get; set; }
 
+    
+
         #region Sync Methods
+
         /// <summary>
         /// Get all entities
         /// </summary>

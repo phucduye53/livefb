@@ -3,28 +3,47 @@ using System;
 using System.Threading.Tasks;
 using liveBot.EntityFramework;
 using liveBot.EntityFramework.models;
+using livefb.Repository;
 
 namespace liveBot.Repository
 {
-    public class UnitOfWork : IDisposable
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        public FBDBContext DbContext { get; }
+        private FBDBContext DbContext;
 
-        public IRepository<User> UserRepository { get; }
-        public IRepository<Comment> CommentRepository { get; }
+        private IRepository<User> userRepository;
+        private IRepository<Comment> commentRepository;
 
-        public UnitOfWork(FBDBContext context,
-             IRepository<User> user,
-             IRepository<Comment> comment)
+        public UnitOfWork(FBDBContext context)
         {
             DbContext = context;
-            UserRepository = user;
-            UserRepository.DbContext = DbContext;
+        }
+        public IRepository<User> UserRepository
+        {
+            get
+            {
 
-            CommentRepository = comment;
-            CommentRepository.DbContext = DbContext;    
+                if (this.userRepository == null)
+                {
+                    this.userRepository = new Repository<User>(DbContext);
+                }
+                return userRepository;
+            }
         }
 
+        public IRepository<Comment> CommentRepository
+        {
+            get
+            {
+
+                if (this.commentRepository == null)
+                {
+                    this.commentRepository = new Repository<Comment>(DbContext);
+                }
+                return commentRepository;
+            }
+        }
+        
         public int SaveChanges()
         {
             var iResult = DbContext.SaveChanges();
