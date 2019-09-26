@@ -2,6 +2,9 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using liveBot.Repository;
+using livefb.Repository;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -11,11 +14,16 @@ namespace liveBot.module
     
     public class LiveBot
     {
+        private readonly IUnitOfWork _uow;
+        public LiveBot(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
         public static JObject jsonParse;
         public static RestClient rClient = new RestClient("https://graph.facebook.com/v4.0");
         public static LiveVideoResult result;
 
-        public static void Run()
+        public void Run()
         {
             Console.WriteLine("fbChatbot running\n");
             var curPath = Directory.GetCurrentDirectory();
@@ -49,8 +57,9 @@ namespace liveBot.module
                 Console.WriteLine("Stream Id : " + video.id);
                 Console.WriteLine("Stream Key : " + video.stream_url);
             }
+
             Console.WriteLine("[INFO]Attempting to open stream on another thread");
-            Task.Run(() => SeverSentClient.Run(getRequestURL()));
+            Task.Run(() => SeverSentClient.Run(getRequestURL(),_uow));
             Console.WriteLine("[INFO]Sever current run on http://localhost:5000/");
         }
         public static string getRequestURL()
