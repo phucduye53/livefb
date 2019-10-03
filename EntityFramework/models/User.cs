@@ -8,7 +8,6 @@ namespace liveBot.EntityFramework.models
     {
             public string FacebookId {get;set;}
             public string DisplayName { get; set; }
-
             public ICollection<Comment> Comments { get; set; }
 
             public User()

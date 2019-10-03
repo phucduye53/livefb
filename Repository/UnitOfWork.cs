@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using liveBot.EntityFramework;
 using liveBot.EntityFramework.models;
+using livefb.EntityFramework.models;
 using livefb.Repository;
 
 namespace liveBot.Repository
@@ -13,6 +14,8 @@ namespace liveBot.Repository
 
         private IRepository<User> userRepository;
         private IRepository<Comment> commentRepository;
+
+        private IRepository<StreamSesson> streamRepository;
 
         public UnitOfWork(FBDBContext context)
         {
@@ -43,6 +46,19 @@ namespace liveBot.Repository
                 return commentRepository;
             }
         }
+        public IRepository<StreamSesson> StreamSessonReporitory
+        {
+            get
+            {
+
+                if (this.streamRepository == null)
+                {
+                    this.streamRepository = new Repository<StreamSesson>(DbContext);
+                }
+                return streamRepository;
+            }
+        }
+        
         
         public int SaveChanges()
         {

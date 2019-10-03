@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using liveBot.EntityFramework;
@@ -9,9 +10,10 @@ using liveBot.EntityFramework;
 namespace liveBot.Migrations
 {
     [DbContext(typeof(FBDBContext))]
-    partial class FBDBContextModelSnapshot : ModelSnapshot
+    [Migration("20191003153721_streamsesson")]
+    partial class streamsesson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

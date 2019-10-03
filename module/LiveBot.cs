@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using liveBot.Repository;
+using livefb.EntityFramework.models;
 using livefb.Repository;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -53,6 +54,9 @@ namespace liveBot.module
 
             foreach (StreamVideo video in result.data)
             {
+                var stream = new StreamSesson(video);
+                _uow.StreamSessonReporitory.Add(stream);
+                _uow.SaveChanges();
                 Console.WriteLine("[INFO] Stream Request Success!\nStream URL : rtmps://live-api-s.facebook.com:443/rtmp/");
                 Console.WriteLine("Stream Id : " + video.id);
                 Console.WriteLine("Stream Key : " + video.stream_url);

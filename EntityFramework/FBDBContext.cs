@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using liveBot.EntityFramework.models;
+using livefb.EntityFramework.models;
 using livefb.Repository.Entity;
 using Microsoft.EntityFrameworkCore;
 namespace liveBot.EntityFramework
@@ -16,6 +17,8 @@ namespace liveBot.EntityFramework
         public DbSet<User> Users { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<StreamSesson> StreamSessons {get;set;}
         public override int SaveChanges()
         {
             var modifiedEntries = ChangeTracker.Entries()
