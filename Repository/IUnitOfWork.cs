@@ -7,9 +7,9 @@ namespace livefb.Repository
 {
     public interface IUnitOfWork
     {
-         IRepository<User> UserRepository {get;}
-         IRepository<Comment> CommentRepository {get;}
-         IRepository<StreamSesson> StreamSessonReporitory {get;}
+         IRepository<User,int> UserRepository {get;}
+         IRepository<Comment,long> CommentRepository {get;}
+         IRepository<StreamSesson,int> StreamSessonReporitory {get;}
          int SaveChanges();
          Task<int> SaveChangesAsync();
     }

@@ -1,4 +1,5 @@
 using liveBot.Repository;
+using livefb.Repository.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace liveBot.Repository
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T,TId> : IRepository<T,TId> where T : class,IEntity<TId> 
     {
         public DbContext DbContext { get; set; }
         public DbSet<T> DbSet { get; set; }
@@ -57,10 +58,9 @@ namespace liveBot.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public T GetById(int id, bool allowTracking = true)
+        public T GetById(TId id, bool allowTracking = true)
         {
-            return DbSet.FirstOrDefault(c =>
-            ((int)c.GetType().GetProperty("Id").GetValue(c) == id));
+            return DbSet.FirstOrDefault(predicate=>predicate.Id.Equals(id));
         }
 
         /// <summary>
@@ -146,8 +146,7 @@ namespace liveBot.Repository
         /// <returns></returns>
         public async Task<T> GetByIdAsync(int id, bool allowTracking = true)
         {
-            var data = await DbSet.FirstOrDefaultAsync(c =>
-            ((int)c.GetType().GetProperty("Id").GetValue(c) == id));
+            var data = await DbSet.FirstOrDefaultAsync(predicate=>predicate.Id.Equals(id));
 
             return data;
         }

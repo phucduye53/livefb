@@ -1,3 +1,4 @@
+using livefb.Repository.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace liveBot.Repository
 {
-    public interface IRepository<T> where T: class
+    public interface IRepository<T,TId> where T: class, IEntity<TId>
     {
         DbSet<T> DbSet { get; set;}
         DbContext DbContext { get; set; }
@@ -34,7 +35,7 @@ namespace liveBot.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        T GetById(int id, bool allowTracking = true);
+        T GetById(TId id, bool allowTracking = true);
 
         /// <summary>
         /// Get entity by lambda expression

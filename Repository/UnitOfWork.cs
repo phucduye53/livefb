@@ -12,48 +12,48 @@ namespace liveBot.Repository
     {
         private FBDBContext DbContext;
 
-        private IRepository<User> userRepository;
-        private IRepository<Comment> commentRepository;
+        private IRepository<User,int> userRepository;
+        private IRepository<Comment,long> commentRepository;
 
-        private IRepository<StreamSesson> streamRepository;
+        private IRepository<StreamSesson,int> streamRepository;
 
         public UnitOfWork(FBDBContext context)
         {
             DbContext = context;
         }
-        public IRepository<User> UserRepository
+        public IRepository<User,int> UserRepository
         {
             get
             {
 
                 if (this.userRepository == null)
                 {
-                    this.userRepository = new Repository<User>(DbContext);
+                    this.userRepository = new Repository<User,int>(DbContext);
                 }
                 return userRepository;
             }
         }
 
-        public IRepository<Comment> CommentRepository
+        public IRepository<Comment,long> CommentRepository
         {
             get
             {
 
                 if (this.commentRepository == null)
                 {
-                    this.commentRepository = new Repository<Comment>(DbContext);
+                    this.commentRepository = new Repository<Comment,long>(DbContext);
                 }
                 return commentRepository;
             }
         }
-        public IRepository<StreamSesson> StreamSessonReporitory
+        public IRepository<StreamSesson,int> StreamSessonReporitory
         {
             get
             {
 
                 if (this.streamRepository == null)
                 {
-                    this.streamRepository = new Repository<StreamSesson>(DbContext);
+                    this.streamRepository = new Repository<StreamSesson,int>(DbContext);
                 }
                 return streamRepository;
             }
