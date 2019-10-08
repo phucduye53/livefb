@@ -36,8 +36,4 @@ namespace liveBot.module
             public string next { get; set; }
         }
 
-        public class Comment {
-            public commentClass[] data { get; set; }
-            public pagingClass paging { get; set; }
-        }
 }
