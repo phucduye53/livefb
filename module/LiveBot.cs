@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using liveBot.EntityFramework.models;
 using liveBot.Repository;
 using livefb.EntityFramework.models;
 using livefb.Repository;
@@ -12,7 +13,7 @@ using RestSharp;
 
 namespace liveBot.module
 {
-    
+
     public class LiveBot
     {
         private readonly IUnitOfWork _uow;
@@ -24,8 +25,11 @@ namespace liveBot.module
         public static RestClient rClient = new RestClient("https://graph.facebook.com/v4.0");
         public static LiveVideoResult result;
 
+        public static StreamSesson sesson;
+
         public void Run()
         {
+            //START READ CONFIG
             Console.WriteLine("fbChatbot running\n");
             var curPath = Directory.GetCurrentDirectory();
             if (!File.Exists(curPath + "/config.json"))
@@ -40,31 +44,32 @@ namespace liveBot.module
             }
             StreamReader sr = new StreamReader("config.json");
             jsonParse = (JObject)JsonConvert.DeserializeObject(sr.ReadToEnd());
+            //READ CONFIG END
+
+            
             Console.WriteLine("GET USER STREAM ID VIDEO ...");
             String url = jsonParse.GetValue("userID").ToString() + "/live_videos";
 
             RestRequest rNewStream = new RestRequest(url, Method.GET);
-            //Steam Info
+            //Stream Info
             rNewStream.AddParameter("broadcast_status", jsonParse.GetValue("status").ToString());
             rNewStream.AddParameter("access_token", jsonParse.GetValue("token").ToString());
-            
+
             var tempResult = rClient.Execute(rNewStream).Content;
             // Console.WriteLine(tempResult);
             result = JsonConvert.DeserializeObject<LiveVideoResult>(tempResult);
 
-            foreach (StreamVideo video in result.data)
-            {
-                var stream = new StreamSesson(video);
-                _uow.StreamSessonReporitory.Add(stream);
-                _uow.SaveChanges();
-                Console.WriteLine("[INFO] Stream Request Success!\nStream URL : rtmps://live-api-s.facebook.com:443/rtmp/");
-                Console.WriteLine("Stream Id : " + video.id);
-                Console.WriteLine("Stream Key : " + video.stream_url);
-            }
+            //GET STREAM SESSON
+            sesson = StreamInfo(result.data);
 
-            Console.WriteLine("[INFO]Attempting to open stream on another thread");
-            Task.Run(() => SeverSentClient.Run(getRequestURL(),_uow));
-            Console.WriteLine("[INFO]Sever current run on http://localhost:5000/");
+            DisplayStreamInfo(sesson);
+
+            Console.WriteLine("[INFO]Attempting to initiate a Server-Sent Events subscription");
+
+            var serverSentClinet = new SeverSentClient();
+            Task.Run(() => serverSentClinet.Run(getRequestURL(), _uow, sesson));
+            
+            Console.WriteLine("[INFO]Sever update live video comments run on http://localhost:5000/");
         }
         public static string getRequestURL()
         {
@@ -75,6 +80,40 @@ namespace liveBot.module
             return urlResult;
         }
 
+        public StreamSesson StreamInfo(StreamVideo[] arr)
+        {
+            foreach (StreamVideo video in arr)
+            {
+                var sesson = _uow.StreamSessonReporitory.Get(p => p.StreamId == video.id);
+                if (sesson == null)
+                {
+                    var newSesson = new StreamSesson(video);
+                    _uow.StreamSessonReporitory.Add(newSesson);
+                    _uow.SaveChanges();
+                    return newSesson;
+                }
+                else
+                {
+                    return sesson;
+                }
+
+            }
+            return null;
+        }
         
+      
+
+
+        public static void DisplayStreamInfo(StreamSesson sesson)
+        {
+            Console.WriteLine("[INFO] Stream Request Success!\nStream URL : rtmps://live-api-s.facebook.com:443/rtmp/");
+            Console.WriteLine("Stream sesson Id : " + sesson.StreamId);
+            Console.WriteLine("Stream sesson Key : " + sesson.StreamUrl);
+        }
+
+
+        
+
+
     }
 }
