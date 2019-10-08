@@ -19,6 +19,7 @@ namespace liveBot.EntityFramework.models
                 FacebookId = result.data.from.id;
                 DisplayName = result.data.from.name;
                 Comments = new List<Comment>();
+  
                 
                 
             }

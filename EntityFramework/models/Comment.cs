@@ -16,10 +16,14 @@ namespace liveBot.EntityFramework.models
 
         public Comment()
         {}
-        public Comment(commentClass result)
+        public Comment(commentClass result,User user,StreamSesson sesson)
         {
             CommentId = result.id;
             Message = result.message;
+            StreamSessonId = sesson.Id;
+            UserId = user.Id;
+
+
         }
     }
 }
