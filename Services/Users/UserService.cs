@@ -1,36 +1,59 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using liveBot.EntityFramework.models;
 using livefb.Repository;
 
 namespace livefb.Services.Users
 {
-    public class UserService: IUserService
+    public class UserService : IUserService
     {
-       private readonly IUnitOfWork unitOfWork;
-       public UserService(IUnitOfWork unitOfWork)
-       {
-           this.unitOfWork = unitOfWork;
-       }
+        private readonly IUnitOfWork unitOfWork;
+        public UserService(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
 
         public bool CheckOut(User user)
         {
-            if(!IsExist(user)) // LEGIT CHECK
+            if (!IsExist(user)) // LEGIT CHECK
             {
                 unitOfWork.UserRepository.Add(user);
                 unitOfWork.SaveChanges();
                 return true;
-            }else{
+            }
+            else
+            {
                 //PROCESS
                 return false;
             }
-            
+
         }
-        
+
+        public IQueryable<User> GetUsers(string searchString)
+        {
+            var result = unitOfWork.UserRepository.GetAll();
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                result = result.Where(p => p.DisplayName.Contains(searchString.Normalize())
+                    || p.FacebookId.Contains(searchString.Normalize()));
+            }
+
+
+
+            return result;
+        }
+
         private bool IsExist(User user)
         {
-            if(unitOfWork.UserRepository.GetById(user.Id)==null )
+            if (unitOfWork.UserRepository.GetById(user.Id) == null)
             {
                 return false;
-            }else{
+            }
+            else
+            {
                 return true;
             }
 
