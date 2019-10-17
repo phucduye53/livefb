@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using liveBot.EntityFramework;
 using liveBot.EntityFramework.models;
 using liveBot.Repository;
 using livefb.Repository;
 using livefb.Services.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +27,9 @@ namespace liveBot
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+                  services.AddDbContext<FBDBContext>(options => options.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=0919061624;Database=fbdb;"));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUserService, UserService>();
             services.AddMvc();
     
         }

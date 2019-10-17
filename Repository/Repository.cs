@@ -77,9 +77,9 @@ namespace liveBot.Repository
         /// Get list of entities
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<T> GetAll(bool allowTracking = true)
+        public IQueryable<T> GetAll(bool allowTracking = true)
         {
-            return DbSet.AsEnumerable();
+            return DbSet.AsQueryable();
         }
 
         /// <summary>

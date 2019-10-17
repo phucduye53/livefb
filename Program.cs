@@ -23,17 +23,17 @@ namespace liveBot
         public static void Main(string[] args)
         {
            
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddDbContext<FBDBContext>(options => options.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=0919061624;Database=fbdb;"));
-            serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
-            serviceCollection.AddTransient<IUserService, UserService>();
-            // create service provider
-            var serviceProvider = serviceCollection.BuildServiceProvider();
+            // var serviceCollection = new ServiceCollection();
+            // serviceCollection.AddDbContext<FBDBContext>(options => options.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=0919061624;Database=fbdb;"));
+            // serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
+            // serviceCollection.AddTransient<IUserService, UserService>();
+            // // create service provider
+            // var serviceProvider = serviceCollection.BuildServiceProvider();
 
-            //  DI magic
-            var bot = ActivatorUtilities.CreateInstance<LiveBot>(serviceProvider);
+            // //  DI magic
+            // var bot = ActivatorUtilities.CreateInstance<LiveBot>(serviceProvider);
      
-             bot.Run();
+            // bot.Run();
       
             BuildWebHost(args).Run();
         }

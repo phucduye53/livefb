@@ -21,7 +21,7 @@ namespace liveBot.Repository
         /// Get all entities
         /// </summary>
         /// <returns></returns>
-        IEnumerable<T> GetAll(bool allowTracking = true);
+        IQueryable<T> GetAll(bool allowTracking = true);
 
         /// <summary>
         /// Get entities by lambda expression
