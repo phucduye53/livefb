@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using liveBot.EntityFramework.models;
 using livefb.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace livefb.Services.Users
 {
@@ -37,8 +38,8 @@ namespace livefb.Services.Users
             
             if (!String.IsNullOrEmpty(searchString))
             {
-                result = result.Where(p => p.DisplayName.Contains(searchString.Normalize())
-                    || p.FacebookId.Contains(searchString.Normalize()));
+                result = result.Where(p => p.DisplayName.ToLower().Normalize().Contains(searchString.ToLower().Normalize())
+                    || p.FacebookId == searchString);
             }
 
 

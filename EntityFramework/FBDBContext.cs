@@ -56,5 +56,6 @@ namespace liveBot.EntityFramework
         {
             base.OnModelCreating(builder);
         }
+
     }
 }
