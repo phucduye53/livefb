@@ -6,6 +6,7 @@ namespace liveBot.EntityFramework.models
 {
     public class Comment : AuditableEntity<long>
     {
+        public string DisplayName {get;set;}
         public string CommentId {get;set;}
         public string Message {get;set;}
         public int UserId { get; set; }
@@ -22,6 +23,7 @@ namespace liveBot.EntityFramework.models
             Message = result.message;
             StreamSessonId = sesson.Id;
             UserId = user.Id;
+            DisplayName=user.DisplayName;
 
 
         }
