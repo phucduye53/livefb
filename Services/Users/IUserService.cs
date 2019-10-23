@@ -9,5 +9,7 @@ namespace livefb.Services.Users
     {
         bool CheckOut(User user);
         IQueryable<User> GetUsers(string searchString);
+
+        IQueryable<User> GetUsers(int? id);
     }
 }

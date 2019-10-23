@@ -54,7 +54,10 @@ namespace liveBot.module
             }
             else
             {
-                return user;
+               var result = user.SetDisplayName(comment.data.from.name);
+               if(result)
+                    _uow.SaveChanges();
+               return user;
             }
 
         }

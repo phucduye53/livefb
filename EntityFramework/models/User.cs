@@ -8,6 +8,8 @@ namespace liveBot.EntityFramework.models
     {
             public string FacebookId {get;set;}
             public string DisplayName { get; set; }
+
+            public string NormalizedName { get; set; }
             public ICollection<Comment> Comments { get; set; }
 
             public User()
@@ -18,10 +20,18 @@ namespace liveBot.EntityFramework.models
             {
                 FacebookId = result.data.from.id;
                 DisplayName = result.data.from.name;
-                Comments = new List<Comment>();
-  
-                
-                
+                NormalizedName = DisplayName.ToLower().Normalize();
+                Comments = new List<Comment>();                            
+            }
+
+            public bool SetDisplayName(string DisplayName)
+            {
+                if(DisplayName != this.DisplayName)
+                {
+                    this.DisplayName = DisplayName;
+                    return true;
+                }
+                return false;
             }
 
     }

@@ -35,12 +35,20 @@ namespace livefb.Services.Users
         public IQueryable<User> GetUsers(string searchString)
         {
             var result = unitOfWork.UserRepository.GetAll();
-            
+
             if (!String.IsNullOrEmpty(searchString))
             {
-                result = result.Where(p => p.DisplayName.ToLower().Normalize().Contains(searchString.ToLower().Normalize())
+                result = result.Where(p => p.NormalizedName.Contains(searchString.ToLower().Normalize())
                     || p.FacebookId == searchString);
             }
+
+
+
+            return result;
+        }
+        public IQueryable<User> GetUsers(int? id)
+        {
+            var result = unitOfWork.UserRepository.GetAll().Where(p=>p.Id==id);
 
 
 
