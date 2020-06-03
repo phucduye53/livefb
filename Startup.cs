@@ -27,7 +27,7 @@ namespace liveBot
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-                  services.AddDbContext<FBDBContext>(options => options.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=0919061624;Database=fbdb;"));
+                  services.AddDbContext<FBDBContext>(options => options.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=123;Database=fbdb;"));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IUserService, UserService>();
             services.AddMvc();
